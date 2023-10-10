@@ -1,8 +1,9 @@
+const fs = require("fs")
+
 class ProductManager {
 
     constructor(path) {
-        this.id = 0
-        this.path
+        this.path = path
     }
 
     addProduct({ title, description, price, thumbnail, code, stock }) {
@@ -33,7 +34,8 @@ class ProductManager {
         console.log("producto añadido")
     }
 
-    getProducts() {
+    
+    getProducts () {
         return this.products;
     }
 
@@ -48,6 +50,15 @@ class ProductManager {
         });
     };
 }
+
+const obtenerJSON = async (path) => {
+    if (!fs.existsSync(path)) {
+        return []
+    }
+    const info = await fs.promises.readFile(path, "utf-8")
+    return JSON.parse(info)
+}
+
 
 const manager = new ProductManager()
 

@@ -1,4 +1,5 @@
 const fs = require("fs")
+const path = require("path")
 
 class ProductManager {
 
@@ -36,11 +37,11 @@ class ProductManager {
 
     
     getProducts () {
-        return this.products;
+        return obtainJSON(this.path);
     }
 
     getProductById(id) {
-        this.products.forEach(product => {
+        this.path.forEach(product => {
             if (product.id === id) {
                 console.log(product);
                 return;
@@ -51,7 +52,7 @@ class ProductManager {
     };
 }
 
-const obtenerJSON = async (path) => {
+const obtainJSON = async (path) => {
     if (!fs.existsSync(path)) {
         return []
     }
@@ -59,10 +60,18 @@ const obtenerJSON = async (path) => {
     return JSON.parse(info)
 }
 
+const saveJSON = (path, data) => {
+    const info = JSON.stringify(data, null)
+    return fs.promises.writeFile(path, info, "utf-8")
+}
 
 const manager = new ProductManager()
 
-manager.addProduct({ title: 'remera', description: 'ropa', price: 3000, thumbnail: 'imagen', code: 'a1', stock: 7 })
+async function addProduct() {
+    console.log(await ProductManager.getProducts)
+}
+
+/* manager.addProduct({ title: 'remera', description: 'ropa', price: 3000, thumbnail: 'imagen', code: 'a1', stock: 7 }) */
 
 console.log(manager.getProducts())
-console.log(manager.getProductById(0))
+/* console.log(manager.getProductById(0)) */
